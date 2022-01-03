@@ -7,7 +7,7 @@ module.exports = {
   target: 'electron-renderer',
   devtool: 'source-map',
   devServer: {
-    contentBase: path.join(__dirname, 'dist/renderer.js'),
+    static: path.join(__dirname, 'dist/renderer.js'),
     compress: true,
     port: 9000
   },
