@@ -9,8 +9,7 @@ const createWindow = (): void => {
     width,
     height,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      nodeIntegration: true
     }
   });
   console.log(isDev);
@@ -19,6 +18,9 @@ const createWindow = (): void => {
       ? 'http://localhost:9000'
       : `file://${app.getAppPath()}/index.html`,
   );
+  win.webContents.openDevTools();
 }
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+  createWindow();
+});
