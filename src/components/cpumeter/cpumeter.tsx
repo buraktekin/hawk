@@ -1,64 +1,68 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { Box } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 import RadialChart from '@/charts/radial/radial';
+import NestedList from '@/components/listings/nestedlist';
+import { CpuInfo } from 'os';
 
-type Data = [] | [{ id: string, data: Array<Object> }];
+export interface ICpuInfo {
+  cpulist: CpuInfo[]
+}
 
-const CPUMeter = () => {
-  const [data, setData] = useState<Data>([]);
+export default function CPUMeter() {
+  const [frequency, setFrequency] = useState(0);
+  const [data, setData] = useState({ y: 0 });
+  const [cpuInfo, setCpuInfo] = useState<CpuInfo[]>([]);
 
-  function getCPUUsage() {
-    // let cpuData = os.cpus().map(cpu => ({ x: cpu.model, y: cpu.times.sys * 1000 }));
-    // // Accumulate every CPU times values
-    // const total = Object.values(cpu.times).reduce(
-    //   (acc, tv) => acc + tv, 0
-    // );
-
-    // const usage = process.cpuUsage();
-    // const currentCPUUsage = (usage.user + usage.system) * 1000;
-
-    // // Find out the percentage used for this specific CPU
-    // const percentage = currentCPUUsage / total;
-    // console.log(`CPU Usage (%): ${percentage}`);
-    // return { x: cpu.model, y: percentage };
-    //});
-    // return cpuData;
-    console.log("it is running...");
+  async function cpuUsage() {
+    const response = await fetch('http://localhost:3000/api/cpu');
+    const payload = await response.json();
+    return payload;
   }
 
   useEffect(() => {
-    // setData(getCPUUsage());
-    getCPUUsage();
-    setData(
-      [
-        {
-          "id": "",
-          "data": [
-            {
-              "x": "Vegetables",
-              "y": 0.2
-            },
-            {
-              "x": "Fruits",
-              "y": 0.4
-            },
-            {
-              "x": "Meat",
-              "y": 0.2
-            },
-            {
-              "x": "Fish",
-              "y": 0.2
-            }
-          ]
-        }
-      ]
-    )
-  }, []);
+    const intervalId = setInterval(() => {
+      cpuUsage().then(res => {
+        setData({ ...data, ...res });
+        setCpuInfo(res.info.cpus);
+        setFrequency(5000);
+      });
+    }, frequency);
+    return () => clearInterval(intervalId); //This is important
+  }, [data, setData]);
+
+
+  const styles = {
+    cardMedia: {
+      width: 200,
+      height: 120
+    }
+  }
 
   return (
-    <RadialChart data={data} />
+    <Card sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <CardContent sx={{ flex: '1 0 auto' }}>
+          <Typography component="div" variant="h5">
+            CPU
+          </Typography>
+          <Typography variant="subtitle1" color="text.secondary" component="div">
+            Mac Miller
+          </Typography>
+        </CardContent>
+        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+          <NestedList cpulist={cpuInfo}></NestedList>
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <CardMedia sx={{ ...styles.cardMedia }}>
+          <RadialChart payload={data} />
+        </CardMedia>
+      </Box>
+    </Card>
   )
 }
-
-export default CPUMeter;
