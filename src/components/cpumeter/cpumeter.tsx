@@ -10,13 +10,14 @@ import NestedList from '@/components/listings/nestedlist';
 import { CpuInfo } from 'os';
 
 export interface ICpuInfo {
-  cpulist: CpuInfo[]
+  platform: "" | string,
+  cpus: [] | CpuInfo[]
 }
 
 export default function CPUMeter() {
   const [frequency, setFrequency] = useState(0);
   const [data, setData] = useState({ y: 0 });
-  const [cpuInfo, setCpuInfo] = useState<CpuInfo[]>([]);
+  const [cpuInfo, setCpuInfo] = useState<ICpuInfo>({ cpus: [], platform: "" });
 
   async function cpuUsage() {
     const response = await fetch('http://localhost:3000/api/cpu');
@@ -28,8 +29,8 @@ export default function CPUMeter() {
     const intervalId = setInterval(() => {
       cpuUsage().then(res => {
         setData({ ...data, ...res });
-        setCpuInfo(res.info.cpus);
-        setFrequency(5000);
+        setCpuInfo(res.info);
+        setFrequency(2000);
       });
     }, frequency);
     return () => clearInterval(intervalId); //This is important
@@ -51,11 +52,11 @@ export default function CPUMeter() {
             CPU
           </Typography>
           <Typography variant="subtitle1" color="text.secondary" component="div">
-            Mac Miller
+            OS/Platform Version: {cpuInfo.platform}
           </Typography>
         </CardContent>
         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-          <NestedList cpulist={cpuInfo}></NestedList>
+          <NestedList cpus={cpuInfo.cpus} platform={''}></NestedList>
         </Box>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
