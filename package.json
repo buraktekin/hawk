@@ -44,6 +44,11 @@
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+    "@fontsource/baskervville": "^4.5.1",
+    "@fontsource/baumans": "^4.5.1",
+    "@fontsource/bayon": "^4.5.2",
+    "@fontsource/bokor": "^4.5.3",
+    "@fontsource/crushed": "^4.5.1",
     "@fontsource/roboto": "^4.5.1",
     "@mui/icons-material": "^5.2.5",
     "@mui/material": "^5.2.6",
