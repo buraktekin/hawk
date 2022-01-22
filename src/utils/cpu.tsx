@@ -26,8 +26,10 @@ let cpu = {
 
 app.get('/api/cpu', (req: Request, res: Response) => {
   // Gathering CPU info
+  const newVal = osX.cpus();
   os.cpuUsage((usage: number) => {
-    cpu.y = parseFloat(usage.toFixed(2));
+    cpu.y = parseInt((usage * 100).toFixed(1));
+    cpu.info.cpus = newVal;
   });
 
   res.json(cpu);
