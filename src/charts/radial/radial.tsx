@@ -22,7 +22,7 @@ const setCPUData = (payload: any) => {
 
 const styles = {
   root: {
-    fontFamily: "consolas, sans-serif",
+    fontFamily: "Baumans",
     textAlign: "center",
     position: "relative",
     width: "100%",
@@ -41,9 +41,7 @@ const styles = {
     justifyContent: "center",
     fontSize: 30,
     color: "#000000",
-    // background: "#FFFFFF33",
     textAlign: "center",
-    // This is important to preserve the chart interactivity
     pointerEvents: "none"
   } as React.CSSProperties,
   totalLabel: {
@@ -61,7 +59,7 @@ const RadialChart = ({ payload }: RadialProps) => {
         innerRadius={0.8}
         cornerRadius={40}
         startAngle={0}
-        endAngle={Math.floor(360 * payload.y)}
+        endAngle={Math.floor(360 * (payload.y / 100))}
         margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
         colors={{ scheme: 'red_grey' }}
         radialAxisStart={{ tickSize: 20, tickPadding: 0, tickRotation: 0 }}
@@ -101,7 +99,7 @@ const RadialChart = ({ payload }: RadialProps) => {
           ]}
       />
       <div style={styles.overlay}>
-        <span>{100 * payload.y}%</span>
+        <span>{payload.y}%</span>
       </div>
     </div>
   )
