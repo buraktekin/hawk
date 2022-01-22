@@ -20,12 +20,6 @@ const App = () => {
         <Grid item sx={{ flex: '1 0 auto' }}>
           <Item elevation={0}><CPUMeter /></Item>
         </Grid>
-        <Grid item sx={{ flex: '1 0 auto' }}>
-          <Item elevation={0}><CPUMeter /></Item>
-        </Grid>
-        <Grid item sx={{ flex: '1 0 auto' }}>
-          <Item elevation={0}><CPUMeter /></Item>
-        </Grid>
       </Grid>
     </Box>
   );
