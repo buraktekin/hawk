@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const os = require('os');
 
 module.exports = {
   mode: 'development',
